@@ -1,0 +1,82 @@
+service: lambda-saga
+
+custom:
+  region: ${opt:region, self:provider.region}
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  stage: dev
+  region: us-east-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+        - dynamodb:DeleteItem
+      Resource: 
+        - arn:aws:dynamodb:${self:custom.region}:*:table/hotel_bookings
+        - arn:aws:dynamodb:${self:custom.region}:*:table/rental_bookings
+        - arn:aws:dynamodb:${self:custom.region}:*:table/flight_bookings
+
+functions:
+  book-hotel:
+    handler: functions/book-hotel.handler
+
+  book-rental:
+    handler: functions/book-rental.handler
+
+  book-flight:
+    handler: functions/book-flight.handler
+
+  cancel-hotel:
+    handler: functions/cancel-hotel.handler
+
+  cancel-rental:
+    handler: functions/cancel-rental.handler
+
+  cancel-flight:
+    handler: functions/cancel-flight.handler
+
+resources:
+  Resources:
+    hotelBookingTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: hotel_bookings
+        AttributeDefinitions:
+          - AttributeName: trip_id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: trip_id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    rentalBookingTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: rental_bookings
+        AttributeDefinitions:
+          - AttributeName: trip_id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: trip_id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    flightBookingTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: flight_bookings
+        AttributeDefinitions:
+          - AttributeName: trip_id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: trip_id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
