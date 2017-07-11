@@ -12,5 +12,7 @@
     "bluebird": "^3.5.0",
     "co": "^4.6.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "serverless": "^1.17.0"
+  }
 }

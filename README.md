@@ -29,3 +29,18 @@ them until success, which means they have to be **idempotent**.
 This demo implements **backward recovery** only.
 
 For *forward recovery* you also need to ensure the requests are imdempotent.
+
+The code for the corresponding Step Function is [here](https://gist.github.com/theburningmonk/cf194c7dc5ac1f1acdb278d94eb1dfa7).
+
+## Deployment
+
+To deploy this example to an AWS environment, run:
+
+`./build.sh deploy <stage> <region> <aws_profile>`
+
+which will install NPM packages and use the `Serverless` framework to deploy both
+DynamoDB tables as well as Lambda functions to the account.
+
+To remove the demo, run:
+
+`./build.sh remove <stage> <region> <aws_profile>`
